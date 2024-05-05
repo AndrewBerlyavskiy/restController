@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List of Users</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th th:text="'ID'"></th>
+        <th th:text="'NAME'"></th>
+        <th th:text="'LAST NAME'"></th>
+        <th th:text="'EMAIL'"></th>
+    </tr>
+    <tr th:each="user : ${list}">
+        <td th:text="${user.getId}">значение1</td>
+        <td th:text="${user.getUsername}">значение2</td>
+        <td th:text="${user.getLastName}">значение3</td>
+        <td th:text="${user.getEmail}">значение4</td>
+    </tr>
+</table>
+<br/>
+<form th:method = "POST" th:action="@{/logout}">
+    <button type = "submit">Click to log out</button>
+</form>
+</body>
+</html>

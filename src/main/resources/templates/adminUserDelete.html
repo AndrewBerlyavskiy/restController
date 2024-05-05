@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete User</title>
+</head>
+<body>
+<h1>Dear Admin, welcome to spring boot security page!</h1>
+<form th:method = "POST" th:action="@{'/admin/delete/' + ${user.getId}}" th:object="${user}">
+    <label for="username">Input username: </label>
+    <input type = "text" th:field = "*{username}" id = "username" th:value="${user.getUsername}" th:readonly="true"/>
+    <br/>
+    <label for="lastName">Input lastName: </label>
+    <input type = "text" th:field = "*{lastName}" id = "lastName" th:value="${user.getLastName}" th:readonly="true"/>
+    <br/>
+    <label for="email">Input email: </label>
+    <input type = "text" th:field = "*{email}" id = "email" th:value="${user.getEmail}" th:readonly="true"/>
+    <br/>
+    <label>Roles:
+        <input type="checkbox" name="roles"
+               th:each="role : ${allRoles}"
+               th:text="${role.name}"
+               th:value="${role.id}"
+               th:field="*{roles}"
+               th:readonly="true"
+        />
+    </label>
+    <button type = "submit">Click to delete user</button>
+</form>
+<br/>
+<form th:method = "POST" th:action="@{/logout}">
+    <button type = "submit">Click to log out</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Page</title>
+</head>
+<body>
+<h1>Dear Admin, welcome to spring boot security page!</h1>
+<form th:method = "POST" th:action="@{'/admin/' + ${getUser.getId}}" th:object="${getUser}">
+    <label for="username">Input username: </label>
+    <input type = "text" th:field = "*{username}" id = "username" th:value="${getUser.getUsername}"/>
+    <br/>
+    <label for="lastName">Input lastName: </label>
+    <input type = "text" th:field = "*{lastName}" id = "lastName" th:value="${getUser.getLastName}"/>
+    <br/>
+    <label for="email">Input email: </label>
+    <input type = "text" th:field = "*{email}" id = "email" th:value="${getUser.getEmail}"/>
+    <br/>
+    <label for="password">Input new password: </label>
+    <input type="password" th:field="*{password}" placeholder="New Password" id = "password"/>
+    <br/>
+    <label>Roles:
+        <input type="checkbox" name="roles"
+               th:each="role : ${allRoles}"
+               th:text="${role.name}"
+               th:value="${role.id}"
+               th:field="*{roles}"
+        />
+    </label>
+    <button type = "submit">Click to update user</button>
+</form>
+<br/>
+<form th:method = "POST" th:action="@{/logout}">
+    <button type = "submit">Click to log out</button>
+</form>
+</body>
+</html>
