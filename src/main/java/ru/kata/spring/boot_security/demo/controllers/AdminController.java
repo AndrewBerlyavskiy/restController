@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
@@ -29,42 +29,40 @@ public class AdminController {
         return "admin";
     }
     @GetMapping("/{id}")
-    public String adminPageGetUser (@PathVariable Long id, Model model) {
+    public User adminPageGetUser (@PathVariable Long id) {
         User user = userService.getUserById(id);
         List<Role> allRoles = roleRepository.findAll();
-        model.addAttribute("getUser", user);
-        model.addAttribute("allRoles", allRoles);
-        return "adminUserUpdate";
+        return user;
     }
-    @PostMapping("/{id}")
-    public String adminPageUpdateUser (Model model, @PathVariable Long id, @ModelAttribute("getUser") User user, @RequestParam String password, @RequestParam(name = "roles") List<Role> selectedRoles) {
+    @PutMapping("/{id}")
+    public User adminPageUpdateUser (@PathVariable Long id, @RequestBody User user, String password) {
         user.setId(id);
-        user.setRoles(selectedRoles);
         if (password != null) {
             user.setPassword(passwordEncoder.encode(password));
         }
         userService.updateUser(user, password);
-        return "redirect:/admin/users";
+        return user;
     }
 
     @GetMapping("/delete/{id}")
-    public String adminPageGetUserForRemoval (Model model, @PathVariable Long id) {
+    public User adminPageGetUserForRemoval (@PathVariable Long id) {
         User user = userService.getUserById(id);
+        if (user.getId() == null) {
+            throw new RuntimeException("No such user in database");
+        }
         List<Role> allRoles = roleRepository.findAll();
-        model.addAttribute("user", user);
-        model.addAttribute("allRoles", allRoles);
-        return "adminUserDelete";
+        return user;
     }
-    @PostMapping("/delete/{id}")
-    public String adminPageDeleteUser (Model model, @PathVariable Long id) {
+    @DeleteMapping("/delete/{id}")
+    public String adminPageDeleteUser (@PathVariable Long id) {
         userService.userRemoval(id);
-        return "redirect:/admin/users";
+        return "Employee with id = " + id + " was deleted";
     }
 
     @GetMapping("/users")
-    public String showAll (Model model) {
-        model.addAttribute("list", userService.listOfUsers());
-        return "usersList";
+    public List<User> showAll () {
+        List<User> users = userService.listOfUsers();
+        return users;
     }
 //    public String adminPage (@ModelAttribute("userAdmin") User userAdmin, Model model) {
 //        if

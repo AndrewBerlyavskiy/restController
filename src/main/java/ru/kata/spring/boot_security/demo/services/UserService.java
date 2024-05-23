@@ -80,6 +80,7 @@ public class UserService implements UserDetailsService {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPasswordConfirm(passwordEncoder.encode(user.getPasswordConfirm()));
         userRepository.save(user);
         return true;
     }
